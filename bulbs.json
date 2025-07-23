@@ -1,0 +1,11 @@
+[ {
+  "id" : 1,
+  "name" : "Phillips Hue",
+  "type" : "LED",
+  "wattage" : 20
+}, {
+  "id" : 2,
+  "name" : "Signify Hue",
+  "type" : "CFL",
+  "wattage" : 20
+} ]
