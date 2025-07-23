@@ -67,7 +67,7 @@ Once the deployment is completed, the SAM CLI will print out the stack's outputs
 -------------------------------------------------------------------------------------------------------------
 OutputKey-Description                        OutputValue
 -------------------------------------------------------------------------------------------------------------
-LightBulbAPIApi - URL for application            https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/pets
+LightBulbAPIApi - URL for application           https://x5qhwpts4l.execute-api.ap-south-1.amazonaws.com/Stage-1/bulbs
 -------------------------------------------------------------------------------------------------------------
 ```
 
