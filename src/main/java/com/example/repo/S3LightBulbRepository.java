@@ -7,6 +7,7 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
+import javax.xml.crypto.Data;
 import java.util.*;
 
 public class S3LightBulbRepository implements LightBulbRepository {
@@ -63,7 +64,10 @@ public class S3LightBulbRepository implements LightBulbRepository {
     public LightBulb save(LightBulb bulb) {
         List<LightBulb> bulbs = readAll();
         if(bulb.getId() == null) {
-            bulb.setId((long) (bulbs.size()+1));
+            Random rand = new Random();
+            // A sample hash to generate a random ID
+            long id = (System.currentTimeMillis() + rand.nextLong(10000)) % 9137;
+            bulb.setId(id);
         }
         bulbs.removeIf(b -> b.getId().equals(bulb.getId()));
         bulbs.add(bulb);

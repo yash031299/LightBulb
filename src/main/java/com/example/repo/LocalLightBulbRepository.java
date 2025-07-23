@@ -44,7 +44,10 @@ public class LocalLightBulbRepository implements LightBulbRepository {
     public LightBulb save(LightBulb bulb) {
         List<LightBulb> bulbs = readAll();
         if(bulb.getId() == null) {
-            bulb.setId((long) (bulbs.size()+1));
+            Random rand = new Random();
+            // A sample hash to generate a random ID
+            long id = (System.currentTimeMillis() + rand.nextLong(10000)) % 9137;
+            bulb.setId(id);
         }
         bulbs.removeIf(b -> b.getId().equals(bulb.getId()));
         bulbs.add(bulb);
