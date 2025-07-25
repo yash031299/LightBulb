@@ -1,7 +1,8 @@
 package com.example.controller;
 
 import com.example.model.LightBulb;
-import com.example.repo.LightBulbRepository;
+import jakarta.validation.Valid;
+import com.example.services.LightBulbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,35 +12,35 @@ import java.util.List;
 @RequestMapping("/bulbs")
 public class LightBulbController {
 
+    private final LightBulbService lightBulbService;
+
     @Autowired
-    private LightBulbRepository repository;
+    public LightBulbController(LightBulbService lightBulbService) {
+        this.lightBulbService = lightBulbService;
+    }
 
     @PostMapping
-    public LightBulb addBulb(@RequestBody LightBulb lightBulb) {
-        return repository.save(lightBulb);
+    public LightBulb addBulb(@Valid @RequestBody LightBulb lightBulb) {
+        return lightBulbService.addBulb(lightBulb);
     }
 
     @GetMapping
     public List<LightBulb> getAllBulbs() {
-        return repository.findAll();
+        return lightBulbService.getAllBulbs();
     }
 
     @GetMapping("/{id}")
     public LightBulb getBulbById(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Bulb not found with id: " + id));
+       return lightBulbService.getBulbById(id);
     }
 
     @PutMapping("/{id}")
-    public LightBulb updateBulb(@PathVariable Long id, @RequestBody LightBulb updatedBulb) {
-        LightBulb existingBulb = repository.findById(id).orElseThrow(() -> new RuntimeException("Bulb not found with id: " + id));
-        existingBulb.setName(updatedBulb.getName());
-        existingBulb.setType(updatedBulb.getType());
-        existingBulb.setWattage(updatedBulb.getWattage());
-        return repository.save(existingBulb);
+    public LightBulb updateBulb(@PathVariable Long id, @Valid @RequestBody LightBulb updatedBulb) {
+       return lightBulbService.updateBulb(id, updatedBulb);
     }
 
     @DeleteMapping("/{id}")
     public void deleteBulb(@PathVariable Long id) {
-        repository.deleteById(id);
+        lightBulbService.deleteBulb(id);
     }
 }
