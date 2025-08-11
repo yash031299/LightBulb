@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 public class DynamoDbLightBulbRepository implements LightBulbRepository {
     private static final Logger logger = LoggerFactory.getLogger(DynamoDbLightBulbRepository.class);
+
     private final DynamoDbEnhancedClient enhancedClient;
+
     private final DynamoDbTable<LightBulb> table;
 
     public DynamoDbLightBulbRepository(DynamoDbClient dynamoDb, 
@@ -79,12 +81,6 @@ public class DynamoDbLightBulbRepository implements LightBulbRepository {
         }
     }
 
-    protected Long generateId() {
-       long timestamp = System.nanoTime();
-        int random = new Random().nextInt(1000);
-        return Math.abs((timestamp % 1000000000000L) * 1000 + random);
-    }
-
     @Override
     public void deleteById(Long id) {
         try {
@@ -94,5 +90,12 @@ public class DynamoDbLightBulbRepository implements LightBulbRepository {
             logger.error("Error deleting light bulb with id: " + id, e);
             throw new RuntimeException("Failed to delete light bulb: " + e.getMessage(), e);
         }
+    }
+
+
+    protected Long generateId() {
+       long timestamp = System.nanoTime();
+        int random = new Random().nextInt(1000);
+        return Math.abs((timestamp % 1000000000000L) * 1000 + random);
     }
 }

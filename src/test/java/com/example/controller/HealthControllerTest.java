@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -11,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class HealthControllerTest {
     @Test
+    @DisplayName("Ping endpoint returns pong")
     void testPingEndpointReturnsPong() throws Exception {
         // Arrange
         HealthController healthController = new HealthController();

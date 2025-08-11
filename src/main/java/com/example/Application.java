@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Import;
 
 import com.example.controller.LightBulbController;
 
-
 @SpringBootApplication
 // We use direct @Import instead of @ComponentScan to speed up cold starts
 // @ComponentScan(basePackages = "com.example.controller")

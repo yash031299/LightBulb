@@ -3,6 +3,7 @@ package com.example.repo;
 import com.example.model.LightBulb;
 import java.util.*;
 
+
 public abstract class AbstractJsonLightBulbRepository implements LightBulbRepository {
 
     @Override
@@ -12,7 +13,9 @@ public abstract class AbstractJsonLightBulbRepository implements LightBulbReposi
 
     @Override
     public Optional<LightBulb> findById(Long id) {
-        return readAll().stream().filter(b -> Objects.equals(b.getId(), id)).findFirst();
+        return readAll().stream()
+                .filter(bulb -> Objects.equals(bulb.getId(), id))
+                .findFirst();
     }
 
     @Override

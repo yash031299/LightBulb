@@ -1,0 +1,28 @@
+spring:
+  profiles: test
+
+# AWS Configuration for Tests
+aws:
+  region: us-east-1
+  dynamodb:
+    endpoint: http://localhost:8000
+    region: us-east-1
+
+# Table name for LightBulb
+lightbulb:
+  table:
+    name: LightBulbTest
+
+# Logging Configuration for Tests
+logging:
+  level:
+    root: WARN
+    com.example: DEBUG
+    org.springframework: WARN
+    software.amazon.awssdk: WARN
+
+# Test AWS credentials
+aws.credentials:
+  type: static
+  access-key-id: test-key
+  secret-access-key: test-secret

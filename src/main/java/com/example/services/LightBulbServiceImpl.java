@@ -3,23 +3,24 @@ package com.example.services;
 import com.example.exception.ResourceNotFoundException;
 import com.example.model.LightBulb;
 import com.example.repo.LightBulbRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class LightBulbServiceImpl implements LightBulbService {
 
-    private final LightBulbRepository repository;
+    private static final Logger logger = LoggerFactory.getLogger(LightBulbServiceImpl.class);
+
+    private final LightBulbRepository lightBulbRepository;
 
     @Autowired
-    public LightBulbServiceImpl(LightBulbRepository repository) {
-        this.repository = repository;
+    public LightBulbServiceImpl(LightBulbRepository lightBulbRepository) {
+        this.lightBulbRepository = lightBulbRepository;
     }
-    private static final Logger logger = LoggerFactory.getLogger(LightBulbServiceImpl.class);
 
     @Override
     public LightBulb addBulb(LightBulb bulb) {
@@ -30,7 +31,7 @@ public class LightBulbServiceImpl implements LightBulbService {
         
         logger.info("Adding new bulb: {}", bulb);
         try {
-            LightBulb savedBulb = repository.save(bulb);
+            LightBulb savedBulb = lightBulbRepository.save(bulb);
             logger.info("Successfully added bulb with ID: {}", savedBulb.getId());
             return savedBulb;
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class LightBulbServiceImpl implements LightBulbService {
     public List<LightBulb> getAllBulbs() {
         logger.info("Fetching all bulbs...");
         try {
-            List<LightBulb> bulbs = repository.findAll();
+            List<LightBulb> bulbs = lightBulbRepository.findAll();
             logger.info("Successfully retrieved {} bulbs", bulbs.size());
             return bulbs;
         } catch (Exception e) {
@@ -61,7 +62,7 @@ public class LightBulbServiceImpl implements LightBulbService {
         
         logger.info("Fetching bulb with ID: {}", id);
         try {
-            return repository.findById(id)
+            return lightBulbRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("LightBulb", "id", id));
         } catch (ResourceNotFoundException e) {
             throw e; // Re-throw ResourceNotFoundException as is
@@ -84,13 +85,13 @@ public class LightBulbServiceImpl implements LightBulbService {
         
         logger.info("Updating bulb with ID: {}", id);
         try {
-            return repository.findById(id).map(existingBulb -> {
+            return lightBulbRepository.findById(id).map(existingBulb -> {
                 logger.debug("Found existing bulb: {}", existingBulb);
                 existingBulb.setName(updatedBulb.getName());
                 existingBulb.setType(updatedBulb.getType());
                 existingBulb.setWattage(updatedBulb.getWattage());
                 
-                LightBulb updated = repository.save(existingBulb);
+                LightBulb updated = lightBulbRepository.save(existingBulb);
                 logger.info("Successfully updated bulb with ID: {}", id);
                 return updated;
             }).orElseThrow(() -> new ResourceNotFoundException("LightBulb", "id", id));
@@ -102,6 +103,7 @@ public class LightBulbServiceImpl implements LightBulbService {
         }
     }
 
+
     @Override
     public void deleteBulb(Long id) {
         if (id == null) {
@@ -111,10 +113,10 @@ public class LightBulbServiceImpl implements LightBulbService {
         
         logger.info("Deleting bulb with ID: {}", id);
         try {
-            if (repository.findById(id).isEmpty()) {
+            if (lightBulbRepository.findById(id).isEmpty()) {
                 throw new ResourceNotFoundException("LightBulb", "id", id);
             }
-            repository.deleteById(id);
+            lightBulbRepository.deleteById(id);
             logger.info("Successfully deleted bulb with ID: {}", id);
         } catch (ResourceNotFoundException e) {
             throw e; // Re-throw ResourceNotFoundException as is

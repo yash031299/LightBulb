@@ -5,19 +5,29 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.*;
-import java.util.*;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class S3LightBulbRepository extends AbstractJsonLightBulbRepository {
 
-    private static final String BUCKET_NAME = System.getenv().getOrDefault("BULBS_BUCKET", "default-bucket-name");
     private static final String OBJECT_KEY = "bulbs.json";
 
+    private final String BUCKET_NAME;
+
     private final S3Client s3;
+
     private final ObjectMapper mapper = new ObjectMapper();
 
     public S3LightBulbRepository(S3Client s3) {
         this.s3 = s3;
+        this.BUCKET_NAME = System.getenv("BULBS_BUCKET");
+        if (BUCKET_NAME == null || BUCKET_NAME.trim().isEmpty()) {
+            throw new IllegalArgumentException("BULBS_BUCKET environment variable must be set");
+        }
     }
 
     @Override

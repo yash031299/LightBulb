@@ -1,5 +1,6 @@
 package com.example.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import jakarta.validation.*;
@@ -7,11 +8,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LightBulbValidationTest {
+class LightBulbTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
+    @DisplayName("Validates LightBulb when it is valid")
     void validate_whenLightBulbIsValid_shouldPassValidation() {
         // Arrange
         LightBulb bulb = new LightBulb();
@@ -25,6 +27,7 @@ class LightBulbValidationTest {
     }
 
     @Test
+    @DisplayName("Validates LightBulb when it is invalid shpuld assert to false")
     void validate_whenLightBulbIsInvalid_shouldFailValidation() {
         // Arrange
         LightBulb bulb = new LightBulb(); // no fields set

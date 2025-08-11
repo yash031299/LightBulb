@@ -3,43 +3,40 @@ package com.example.repo;
 import com.example.model.LightBulb;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocalLightBulbRepository extends AbstractJsonLightBulbRepository {
 
-    protected final File file = new File("bulbs.json");
-    
-    protected File getFile() {
-        return file;
-    }
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final String FILE_NAME = "bulbs.json";
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected List<LightBulb> readAll() {
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
+        
         try {
-            File currentFile = getFile();
-            if (!currentFile.exists() || currentFile.length() == 0) {
-                return new ArrayList<>();
-            }
-            try {
-                return mapper.readValue(currentFile, new TypeReference<>() {});
-            } catch (com.fasterxml.jackson.core.JsonParseException e) {
-                // If file exists but is not valid JSON, treat as empty
-                return new ArrayList<>();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to read " + getFile().getName(), e);
+            return objectMapper.readValue(file, new TypeReference<List<LightBulb>>() {});
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read bulbs from file: " + FILE_NAME, e);
         }
     }
+
 
     @Override
     protected void writeAll(List<LightBulb> bulbs) {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(getFile(), bulbs);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to write " + getFile().getName(), e);
+            objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(new File(FILE_NAME), bulbs);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write bulbs to file: " + FILE_NAME, e);
         }
     }
-
 }

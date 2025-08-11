@@ -1,6 +1,7 @@
 package com.example.repo;
 
 import com.example.model.LightBulb;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
@@ -19,6 +20,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that save and delete work when it is called with a valid bulb")
     void saveAndDelete_whenCalled_shouldSaveAndDeleteBulb() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -36,6 +38,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that saveMultipleBulbs works when it is called with valid bulbs")
     void saveMultipleBulbs_whenCalled_shouldContainAllBulbs() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -49,6 +52,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that updateBulb works when it is called with a valid bulb")
     void updateBulb_whenIdExists_shouldUpdateBulb() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -64,6 +68,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that deleteById works when it is called with a valid id")
     void deleteById_whenIdDoesNotExist_shouldNotThrow() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -72,6 +77,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that findById works when it is called with a valid id")
     void findById_whenIdExists_shouldReturnBulb() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -85,6 +91,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that findById should return empty when id does not exist")
     void findById_whenIdDoesNotExist_shouldReturnEmpty() {
         // Arrange
         DummyRepo repo = new DummyRepo();
@@ -95,6 +102,7 @@ class AbstractJsonLightBulbRepositoryTest {
     }
 
     @Test
+    @DisplayName("Verifies that save works when it is called with a valid bulb and returns the bulb with a generated id")
     void save_whenBulbIdIsNull_shouldGenerateId() {
         // Arrange
         DummyRepo repo = new DummyRepo();
